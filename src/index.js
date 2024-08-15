@@ -88,9 +88,7 @@ bot.start(async (ctx) => {
             }
         })
 
-        await ctx.replyWithPhoto({
-            source: "./assets/main.jpg"
-        }, {
+        await ctx.replyWithPhoto("https://telegra.ph/file/081b6fc4cd8d8824bb856.jpg", {
             caption: lang[language_code].start(ctx),
             reply_markup: {
                 inline_keyboard: [
