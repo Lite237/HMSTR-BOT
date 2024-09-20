@@ -1,4 +1,20 @@
+import prisma from "./prisma.js";
 
+async function getLinks() {
+    const CHANNELS = await prisma.channels.findMany({
+        where: {
+            type: "main",
+            processStatus: {
+                notIn: ["0", "1", "2"]
+            }
+        },
+        select: {
+            link: true
+        }
+    });
+
+    return CHANNELS.reduce((prev, channel) => prev + `👉 ${channel.link}\n\n`, "");
+}
 
 const lang = {
     en: {
@@ -46,8 +62,8 @@ https://t.me/${ctx.botInfo.username}?start=user${ctx.from.id}
         settings(user) {
             return `🔧 Account Settings:\n\n🤴🏻 Username =  ${user.userName}\n🆔 User ID = ${user.userId}\n💼 Withdrawal Number = ${user.accountNumber}\n\n💹It will be used to send your money. \nClick the button 🔽 below to add or modify your number. `;
         },
-        start(ctx) {
-            return `🎁 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
+        async start(ctx) {
+            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n${await getLinks()}\n🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
         },
         bonus(hours, mins, secs) {
             return `🚀 Current Bonus Already Claimed!\n\n👾👾 Be back in precisely ${hours} hour(s) ${mins} minutes and ${secs} seconds to claim your next bonus! ⏳`
@@ -56,7 +72,7 @@ https://t.me/${ctx.botInfo.username}?start=user${ctx.from.id}
 
     fr: {
         welcome: "Félicitations ! Votre compte est prêt ! 🎉\n\nDécouvrez comment booster vos gains en cliquant sur '📋 Procédure 📋' en-dessous 💸",
-        invalid: "❌ Attention, vous n'avez pas rejoindre tout les canaux. Veuillez rejoindre tout les canaux puis réessayer",
+        invalid: "❌ vous devez rejoindre tout les canaux !!",
         win: "🌠🎉 Félicitations Éclatantes! 🎉🌠\n\n🚀 Un Bonus de 750 FCFA a atterri sur votre compte principal!",
         procedure: "🤔 Découvrez comment booster vos gains avec le bot ! C’est facile :\n\n1️⃣ Appuyez sur “Partager ↗️”\n2️⃣ Copiez votre lien unique 📎\n3️⃣ Diffusez - le dans vos groupes Telegram 📢\n\n🎉 Chaque nouveau membre vous rapporte 5500 FCFA instantanément!\n\n🍀 Tentez votre chance et saisissez cette opportunité en or! 🌟",
         minText: "🚫 Le montant minimum pour un retrait est de 40 000 FCFA.",
@@ -99,8 +115,8 @@ https://t.me/${ctx.botInfo.username}?start=user${ctx.from.id}
         settings(user) {
             return `🔧 Paramètres du compte:\n\nNom Utilisateur = ${user.userName}\n🆔 ID Utilisateur = ${user.userId}\n💼 Numéro de retrait = ${user.accountNumber}\n\n💹Il sera utilisé pour envoyer ton argent.\nClique sur le bouton 🔽 ci-dessous pour l’ajouter ou le changer`
         },
-        start(ctx) {
-            return `🎁 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
+        async start(ctx) {
+            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n${await getLinks()}\n🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
         },
         bonus(hours, mins, secs) {
             return `🚀 Bonus Actuel Déjà Attribué!\n\n👾 Reviens dans exactement ${hours} heure(s) ${mins} minutes ${secs} secondes pour décrocher ton prochain bonus ! ⏳`
