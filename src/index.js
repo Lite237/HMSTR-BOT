@@ -719,19 +719,19 @@ bot.on("callback_query", async (ctx) => {
                     }
                 })
 
-                if (!done) {
-                    const user = await ctx.telegram.getChatMember(task.chatId, ctx.from.id);
-                    done = !(user.status === "left" || user.status === "kicked");
+                // if (!done) {
+                //     const user = await ctx.telegram.getChatMember(task.chatId, ctx.from.id);
+                //     done = !(user.status === "left" || user.status === "kicked");
 
-                    if (done) {
-                        await prisma.userTasks.create({
-                            data: {
-                                userId: ctx.from.id.toString(),
-                                taskId: payload
-                            }
-                        })
-                    }
-                }
+                //     if (done) {
+                //         await prisma.userTasks.create({
+                //             data: {
+                //                 userId: ctx.from.id.toString(),
+                //                 taskId: payload
+                //             }
+                //         })
+                //     }
+                // }
             }
 
             if (payload.slice(2, 4) == "22") {
