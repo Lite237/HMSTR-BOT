@@ -1,5 +1,4 @@
 import { Telegraf } from "telegraf";
-import { message } from "telegraf/filters"
 
 import dotenv from "dotenv";
 
@@ -1168,6 +1167,3 @@ export const startVercel = async (req, res) => {
     await production(req, res, bot);
 };
 
-//dev mode
-
-ENVIRONMENT !== "production" && development(bot);
