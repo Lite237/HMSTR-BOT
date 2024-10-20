@@ -198,7 +198,7 @@ bot.start(async (ctx) => {
         });
     }
 
-    const isAccountValid = accountValid(ctx);
+    const isAccountValid = false;
 
     if (!isAccountValid) {
         const starterText = lang[language_code].start(ctx);
