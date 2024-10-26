@@ -198,10 +198,10 @@ bot.start(async (ctx) => {
         });
     }
 
-    const isAccountValid = false;
+    const isAccountValid = await accountValid(ctx);
 
     if (!isAccountValid) {
-        const starterText = lang[language_code].start(ctx);
+        const starterText = await lang[language_code].start(ctx);
 
         await ctx.telegram.editMessageText(
             ctx.chat.id,

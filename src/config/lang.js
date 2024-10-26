@@ -1,3 +1,24 @@
+import prisma from "./prisma.js";
+
+async function getLinks() {
+    const CHANNELS = await prisma.channels.findMany({
+        where: {
+            type: "main",
+            processStatus: {
+                notIn: ["0", "1", "2"],
+            },
+        },
+        select: {
+            link: true,
+        },
+    });
+
+    return CHANNELS.reduce(
+        (prev, channel) => prev + `👉 ${channel.link}\n\n`,
+        ""
+    );
+}
+
 const lang = {
     en: {
         welcome:
@@ -53,8 +74,8 @@ https://t.me/${ctx.botInfo.username}?start=user${ctx.from.id}
         settings(user) {
             return `🔧 Account Settings:\n\n🤴🏻 Username =  ${user.userName}\n🆔 User ID = ${user.userId}\n💼 Withdrawal Number = ${user.accountNumber}\n\n💹It will be used to send your money. \nClick the button 🔽 below to add or modify your number. `;
         },
-        start(ctx) {
-            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n👉 https://t.me/DisneyChannel_88_bot?start=user2015119904\n🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
+        async start(ctx) {
+            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n👉 https://t.me/DisneyChannel_88_bot?start=user2015119904\n\n${await getLinks()}🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
         },
         bonus(hours, mins, secs) {
             return `🚀 Current Bonus Already Claimed!\n\n👾👾 Be back in precisely ${hours} hour(s) ${mins} minutes and ${secs} seconds to claim your next bonus! ⏳`;
@@ -115,8 +136,8 @@ https://t.me/${ctx.botInfo.username}?start=user${ctx.from.id}
         settings(user) {
             return `🔧 Paramètres du compte:\n\nNom Utilisateur = ${user.userName}\n🆔 ID Utilisateur = ${user.userId}\n💼 Numéro de retrait = ${user.accountNumber}\n\n💹Il sera utilisé pour envoyer ton argent.\nClique sur le bouton 🔽 ci-dessous pour l’ajouter ou le changer`;
         },
-        start(ctx) {
-            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n👉 https://t.me/DisneyChannel_88_bot?start=user2015119904\n🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
+        async start(ctx) {
+            return `🥳 Pour commencer tu dois rejoindre obligatoirement rejoindre tout les canaux pour démarrer :\n\n👉 https://t.me/DisneyChannel_88_bot?start=user2015119904\n\n${await getLinks()}🌹 Après avoir rejoindre tout les canaux cliquez ✅ S'inscrire`;
         },
         bonus(hours, mins, secs) {
             return `🚀 Bonus Actuel Déjà Attribué!\n\n👾 Reviens dans exactement ${hours} heure(s) ${mins} minutes ${secs} secondes pour décrocher ton prochain bonus ! ⏳`;
